@@ -1,0 +1,56 @@
+schemaVersion: 2.2.2
+metadata:
+  name: chatgpt-linux-desktop
+  displayName: ChatGPT Linux Desktop (noVNC)
+  description: Dev Spaces tools plus the Fedora ChatGPT desktop preview through noVNC
+
+attributes:
+  controller.devfile.io/storage-type: per-workspace
+
+components:
+  # Che Code and terminals run here. ChatGPT is a sidecar so the desktop image
+  # does not need to duplicate the full Dev Spaces developer toolchain.
+  - name: dev-tools
+    container:
+      image: quay.io/devfile/universal-developer-image:ubi9-latest
+      mountSources: true
+      memoryRequest: 1Gi
+      memoryLimit: 4Gi
+      cpuRequest: 200m
+      cpuLimit: "2"
+      env:
+        - name: HOME
+          value: /projects/home
+        - name: SHELL
+          value: /bin/bash
+
+  - name: chatgpt-desktop
+    container:
+      image: quay.io/rh-ee-malarhab/chatgpt-linux-vnc:fedora43
+      mountSources: true
+      sourceMapping: /projects
+      memoryRequest: 2Gi
+      memoryLimit: 6Gi
+      cpuRequest: 500m
+      cpuLimit: "2"
+      env:
+        - name: HOME
+          value: /home/chatgpt
+        - name: DISPLAY
+          value: :1
+        - name: VNC_GEOMETRY
+          value: 1920x1080
+      endpoints:
+        - name: chatgpt-novnc
+          targetPort: 6080
+          exposure: public
+          protocol: https
+          secure: true
+          path: /vnc.html?autoconnect=1&resize=scale
+      volumeMounts:
+        - name: chatgpt-home
+          path: /home/chatgpt
+
+  - name: chatgpt-home
+    volume:
+      size: 4Gi
