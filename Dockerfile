@@ -90,7 +90,7 @@ ENV HOME=/home/chatgpt \
     NOVNC_LISTEN_ADDRESS=0.0.0.0 \
     VNC_PORT=5901 \
     BUILDAH_ISOLATION=chroot \
-    CHATGPT_EXTRA_ARGS="--disable-dev-shm-usage --disable-gpu --ozone-platform=x11"
+    CHATGPT_EXTRA_ARGS="--disable-dev-shm-usage --ozone-platform=x11"
 
 EXPOSE 6080
 WORKDIR /projects
