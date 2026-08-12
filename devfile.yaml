@@ -12,12 +12,12 @@ components:
   # does not need to duplicate the full Dev Spaces developer toolchain.
   - name: dev-tools
     container:
-      image: quay.io/devfile/universal-developer-image:ubi9-latest
+      image: quay.io/devfile/universal-developer-image:ubi10-latest
       mountSources: true
-      memoryRequest: 1Gi
-      memoryLimit: 4Gi
-      cpuRequest: 200m
-      cpuLimit: "2"
+      memoryRequest: 512Mi
+      memoryLimit: 2Gi
+      cpuRequest: 50m
+      cpuLimit: 1500m
       env:
         - name: HOME
           value: /projects/home
@@ -29,10 +29,10 @@ components:
       image: quay.io/rh-ee-malarhab/chatgpt-linux-vnc:fedora43
       mountSources: true
       sourceMapping: /projects
-      memoryRequest: 2Gi
-      memoryLimit: 6Gi
+      memoryRequest: 1Gi
+      memoryLimit: 5Gi
       cpuRequest: 500m
-      cpuLimit: "2"
+      cpuLimit: 3000m
       env:
         - name: HOME
           value: /home/chatgpt
